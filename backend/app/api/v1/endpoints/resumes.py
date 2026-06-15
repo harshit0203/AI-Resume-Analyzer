@@ -1,4 +1,3 @@
-"""Resume upload, listing, retrieval and management endpoints."""
 from __future__ import annotations
 
 import uuid
@@ -16,7 +15,6 @@ from app.services.storage_service import storage_service
 
 router = APIRouter(prefix="/resumes", tags=["resumes"])
 
-
 @router.post("", response_model=APIResponse[ResumePublic], status_code=status.HTTP_201_CREATED)
 async def upload_resume(
     file: UploadFile = File(...),
@@ -32,7 +30,6 @@ async def upload_resume(
     )
     return APIResponse(data=ResumePublic.model_validate(resume), message="Resume uploaded and parsed.")
 
-
 @router.get("", response_model=Page[ResumeListItem])
 async def list_resumes(
     page: int = Query(1, ge=1),
@@ -47,7 +44,6 @@ async def list_resumes(
         [ResumeListItem.model_validate(item) for item in items], total, page, page_size
     )
 
-
 @router.get("/{resume_id}", response_model=APIResponse[ResumePublic])
 async def get_resume(
     resume_id: uuid.UUID,
@@ -56,7 +52,6 @@ async def get_resume(
 ) -> APIResponse[ResumePublic]:
     resume = await ResumeService(db).get_owned(resume_id, user.id)
     return APIResponse(data=ResumePublic.model_validate(resume))
-
 
 @router.get("/{resume_id}/download")
 async def download_resume(
@@ -72,7 +67,6 @@ async def download_resume(
         headers={"Content-Disposition": f'attachment; filename="{resume.file_name}"'},
     )
 
-
 @router.post("/{resume_id}/primary", response_model=APIResponse[ResumePublic])
 async def set_primary(
     resume_id: uuid.UUID,
@@ -81,7 +75,6 @@ async def set_primary(
 ) -> APIResponse[ResumePublic]:
     resume = await ResumeService(db).set_primary(resume_id, user.id)
     return APIResponse(data=ResumePublic.model_validate(resume), message="Primary resume updated.")
-
 
 @router.delete("/{resume_id}", response_model=MessageResponse)
 async def delete_resume(

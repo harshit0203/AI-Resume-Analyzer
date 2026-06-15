@@ -1,4 +1,3 @@
-"""Analysis, agent execution and AI-output schemas."""
 from __future__ import annotations
 
 import uuid
@@ -10,13 +9,10 @@ from pydantic import BaseModel, Field
 from app.models.enums import AgentStatus, AgentType, AnalysisStatus
 from app.schemas.common import ORMModel
 
-
 class CreateAnalysisRequest(BaseModel):
     resume_id: uuid.UUID
     target_role: str | None = Field(default=None, max_length=255)
 
-
-# --------------------------------------------------------------- Agent outputs
 class ATSResult(BaseModel):
     ats_score: float = 0.0
     strengths: list[str] = Field(default_factory=list)
@@ -25,12 +21,10 @@ class ATSResult(BaseModel):
     recommendations: list[str] = Field(default_factory=list)
     formatting_issues: list[str] = Field(default_factory=list)
 
-
 class SkillGapItem(BaseModel):
     skill: str
     importance: str = "medium"
     resources: list[str] = Field(default_factory=list)
-
 
 class SkillGapResult(BaseModel):
     target_path: str | None = None
@@ -38,7 +32,6 @@ class SkillGapResult(BaseModel):
     missing_skills: list[SkillGapItem] = Field(default_factory=list)
     coverage_percentage: float = 0.0
     learning_roadmap: list[dict[str, Any]] = Field(default_factory=list)
-
 
 class JobMatchResult(BaseModel):
     title: str
@@ -51,14 +44,12 @@ class JobMatchResult(BaseModel):
     missing_skills: list[str] = Field(default_factory=list)
     description: str | None = None
 
-
 class ImprovementResult(BaseModel):
     improved_summary: str | None = None
     stronger_bullets: list[dict[str, str]] = Field(default_factory=list)
     achievement_suggestions: list[str] = Field(default_factory=list)
     project_suggestions: list[str] = Field(default_factory=list)
     ats_keywords: list[str] = Field(default_factory=list)
-
 
 class CareerInsightResult(BaseModel):
     current_level: str | None = None
@@ -71,8 +62,6 @@ class CareerInsightResult(BaseModel):
     roadmap: list[dict[str, Any]] = Field(default_factory=list)
     narrative: str | None = None
 
-
-# --------------------------------------------------------------- Persistence
 class AgentExecutionPublic(ORMModel):
     id: uuid.UUID
     agent_type: AgentType
@@ -84,7 +73,6 @@ class AgentExecutionPublic(ORMModel):
     duration_ms: float | None = None
     started_at: datetime | None = None
     completed_at: datetime | None = None
-
 
 class JobMatchPublic(ORMModel):
     id: uuid.UUID
@@ -98,7 +86,6 @@ class JobMatchPublic(ORMModel):
     matched_skills: list[str]
     description: str | None = None
 
-
 class CareerInsightPublic(ORMModel):
     id: uuid.UUID
     current_level: str | None = None
@@ -111,7 +98,6 @@ class CareerInsightPublic(ORMModel):
     roadmap: list[dict[str, Any]]
     narrative: str | None = None
 
-
 class AnalysisListItem(ORMModel):
     id: uuid.UUID
     resume_id: uuid.UUID
@@ -121,7 +107,6 @@ class AnalysisListItem(ORMModel):
     overall_score: float | None = None
     created_at: datetime
     completed_at: datetime | None = None
-
 
 class AnalysisDetail(ORMModel):
     id: uuid.UUID

@@ -1,4 +1,3 @@
-"""Custom ASGI middleware: request IDs, access logging and security headers."""
 from __future__ import annotations
 
 import time
@@ -13,9 +12,7 @@ from app.core.logging import get_logger
 
 logger = get_logger("app.access")
 
-
 class RequestContextMiddleware(BaseHTTPMiddleware):
-    """Assigns a request id and logs structured access entries."""
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
@@ -52,9 +49,7 @@ class RequestContextMiddleware(BaseHTTPMiddleware):
         )
         return response
 
-
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
-    """Adds defensive security headers to every response."""
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         response = await call_next(request)

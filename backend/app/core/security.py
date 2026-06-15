@@ -1,4 +1,3 @@
-"""Security primitives: password hashing and JWT token management."""
 from __future__ import annotations
 
 import uuid
@@ -14,25 +13,18 @@ from app.core.exceptions import UnauthorizedError
 
 TokenType = Literal["access", "refresh"]
 
-# Argon2id is the OWASP-recommended password hashing algorithm. It has no input
-# length limit and is memory-hard, making it resistant to GPU/ASIC attacks.
-# Parameters follow OWASP guidance (>= 19 MiB memory, t=2, p=1).
 _password_hasher = PasswordHasher(
     time_cost=3,
-    memory_cost=64 * 1024,  # 64 MiB
+    memory_cost=64 * 1024,
     parallelism=4,
     hash_len=32,
     salt_len=16,
 )
 
-
 def hash_password(password: str) -> str:
     return _password_hasher.hash(password)
 
-
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    # Transparently support legacy bcrypt hashes so accounts created before the
-    # migration to Argon2 continue to work.
     if hashed_password.startswith(("$2a$", "$2b$", "$2y$")):
         return _verify_bcrypt(plain_password, hashed_password)
     try:
@@ -44,16 +36,13 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     ):
         return False
 
-
 def needs_rehash(hashed_password: str) -> bool:
-    """True if the stored hash should be upgraded (e.g. legacy bcrypt or new params)."""
     if hashed_password.startswith(("$2a$", "$2b$", "$2y$")):
         return True
     try:
         return _password_hasher.check_needs_rehash(hashed_password)
     except argon2_exceptions.InvalidHashError:
         return True
-
 
 def _verify_bcrypt(plain_password: str, hashed_password: str) -> bool:
     try:
@@ -63,7 +52,6 @@ def _verify_bcrypt(plain_password: str, hashed_password: str) -> bool:
         return bcrypt.checkpw(pw, hashed_password.encode("utf-8"))
     except Exception:
         return False
-
 
 def _create_token(
     subject: str,
@@ -84,7 +72,6 @@ def _create_token(
         payload.update(extra_claims)
     return jwt.encode(payload, secret, algorithm=settings.JWT_ALGORITHM)
 
-
 def create_access_token(subject: str, extra_claims: dict[str, Any] | None = None) -> str:
     return _create_token(
         subject,
@@ -94,7 +81,6 @@ def create_access_token(subject: str, extra_claims: dict[str, Any] | None = None
         extra_claims,
     )
 
-
 def create_refresh_token(subject: str, extra_claims: dict[str, Any] | None = None) -> str:
     return _create_token(
         subject,
@@ -103,7 +89,6 @@ def create_refresh_token(subject: str, extra_claims: dict[str, Any] | None = Non
         settings.JWT_REFRESH_SECRET_KEY,
         extra_claims,
     )
-
 
 def decode_token(token: str, token_type: TokenType) -> dict[str, Any]:
     secret = settings.JWT_SECRET_KEY if token_type == "access" else settings.JWT_REFRESH_SECRET_KEY

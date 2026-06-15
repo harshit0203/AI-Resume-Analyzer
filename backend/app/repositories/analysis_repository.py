@@ -1,4 +1,3 @@
-"""Data access for analyses, agent executions, job matches and insights."""
 from __future__ import annotations
 
 import uuid
@@ -10,7 +9,6 @@ from sqlalchemy.orm import selectinload
 from app.models.agent_execution import AgentExecution
 from app.models.analysis import Analysis
 from app.repositories.base import BaseRepository
-
 
 class AnalysisRepository(BaseRepository[Analysis]):
     def __init__(self, session: AsyncSession) -> None:
@@ -76,7 +74,6 @@ class AnalysisRepository(BaseRepository[Analysis]):
             "average_ats_score": round(float(avg_ats), 1) if avg_ats is not None else 0.0,
             "best_ats_score": round(float(best_ats), 1) if best_ats is not None else 0.0,
         }
-
 
 class AgentExecutionRepository(BaseRepository[AgentExecution]):
     def __init__(self, session: AsyncSession) -> None:

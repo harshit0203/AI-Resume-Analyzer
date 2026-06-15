@@ -11,7 +11,6 @@ import type {
   UserSettings,
 } from "@/lib/types";
 
-// ----------------------------------------------------------------- Auth
 export const authApi = {
   async register(payload: { email: string; password: string; full_name: string }) {
     const { data } = await api.post<ApiResponse<AuthResponse>>("/auth/register", payload);
@@ -30,7 +29,6 @@ export const authApi = {
   },
 };
 
-// ----------------------------------------------------------------- Users
 export const userApi = {
   async updateProfile(payload: Partial<Pick<User, "full_name" | "headline" | "avatar_url">>) {
     const { data } = await api.patch<ApiResponse<User>>("/users/me", payload);
@@ -49,7 +47,6 @@ export const userApi = {
   },
 };
 
-// ----------------------------------------------------------------- Resumes
 export const resumeApi = {
   async upload(file: File) {
     const form = new FormData();
@@ -79,7 +76,6 @@ export const resumeApi = {
   },
 };
 
-// ----------------------------------------------------------------- Analyses
 export const analysisApi = {
   async create(payload: { resume_id: string; target_role?: string }) {
     const { data } = await api.post<ApiResponse<Analysis>>("/analyses", payload);

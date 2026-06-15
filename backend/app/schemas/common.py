@@ -1,4 +1,3 @@
-"""Shared schema primitives: envelopes, pagination and query params."""
 from __future__ import annotations
 
 from datetime import datetime
@@ -9,25 +8,19 @@ from pydantic import BaseModel, ConfigDict, Field
 
 T = TypeVar("T")
 
-
 class ORMModel(BaseModel):
-    """Base for schemas that read from ORM objects."""
 
     model_config = ConfigDict(from_attributes=True)
 
-
 class APIResponse(BaseModel, Generic[T]):
-    """Consistent success envelope used across the API."""
 
     success: bool = True
     data: T | None = None
     message: str | None = None
 
-
 class MessageResponse(BaseModel):
     success: bool = True
     message: str
-
 
 class PageMeta(BaseModel):
     page: int
@@ -37,9 +30,7 @@ class PageMeta(BaseModel):
     has_next: bool
     has_prev: bool
 
-
 class Page(BaseModel, Generic[T]):
-    """Paginated collection envelope."""
 
     success: bool = True
     items: list[T]
@@ -60,7 +51,6 @@ class Page(BaseModel, Generic[T]):
             ),
         )
 
-
 class PaginationParams(BaseModel):
     page: int = Field(default=1, ge=1)
     page_size: int = Field(default=20, ge=1, le=100)
@@ -71,7 +61,6 @@ class PaginationParams(BaseModel):
     @property
     def offset(self) -> int:
         return (self.page - 1) * self.page_size
-
 
 class TimestampMixin(BaseModel):
     created_at: datetime

@@ -1,11 +1,8 @@
-"""Shared state passed between agents in the LangGraph workflow."""
 from __future__ import annotations
 
 from typing import Any, Awaitable, Callable, Optional, TypedDict
 
-# Async callback invoked on each agent lifecycle event for live (WebSocket) updates.
 ProgressCallback = Callable[[str, str, Optional[dict[str, Any]]], Awaitable[None]]
-
 
 class WorkflowState(TypedDict, total=False):
     raw_text: str

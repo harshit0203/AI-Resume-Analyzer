@@ -1,12 +1,5 @@
-"""Reference data used by the deterministic analysis engine.
-
-This data powers skill matching, career-path comparison and the heuristic
-fallback that runs when no OpenAI key is configured, ensuring the product is
-fully functional end-to-end in any environment.
-"""
 from __future__ import annotations
 
-# Canonical skill vocabulary with common aliases mapped to a normalised label.
 SKILL_ALIASES: dict[str, str] = {
     "js": "javascript",
     "javascript": "javascript",
@@ -57,7 +50,6 @@ SKILL_ALIASES: dict[str, str] = {
     "tailwindcss": "tailwind css",
 }
 
-# Required skills per supported career path.
 CAREER_PATHS: dict[str, list[str]] = {
     "MERN Developer": [
         "mongodb", "express", "react", "node.js", "javascript",
@@ -85,7 +77,6 @@ CAREER_PATHS: dict[str, list[str]] = {
     ],
 }
 
-# Curated learning resources keyed by normalised skill.
 LEARNING_RESOURCES: dict[str, list[str]] = {
     "react": ["React official docs", "Epic React by Kent C. Dodds"],
     "node.js": ["Node.js docs", "The Node.js Handbook"],
@@ -101,7 +92,6 @@ LEARNING_RESOURCES: dict[str, list[str]] = {
 
 DEFAULT_RESOURCES = ["Official documentation", "Hands-on project practice"]
 
-# Indicative annual salary ranges (USD) per path and seniority.
 SALARY_BANDS: dict[str, dict[str, str]] = {
     "MERN Developer": {"junior": "$60k–$85k", "mid": "$85k–$120k", "senior": "$120k–$160k"},
     "Full Stack Engineer": {"junior": "$70k–$95k", "mid": "$95k–$135k", "senior": "$135k–$185k"},

@@ -1,4 +1,3 @@
-"""Authentication business logic: registration, login and token rotation."""
 from __future__ import annotations
 
 import uuid
@@ -24,9 +23,7 @@ from app.schemas.auth import LoginRequest, RegisterRequest
 
 logger = get_logger(__name__)
 
-
 class AuthService:
-    """Coordinates user credential verification and JWT issuance."""
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
@@ -43,7 +40,6 @@ class AuthService:
             hashed_password=hash_password(payload.password),
             full_name=payload.full_name.strip(),
         )
-        # Every user receives a settings row so the UI always has defaults.
         self.settings_repo.add(UserSettings(user_id=user.id))
         await self.session.flush()
         logger.info("Registered new user %s", user.id)
@@ -51,7 +47,6 @@ class AuthService:
 
     async def authenticate(self, payload: LoginRequest) -> User:
         user = await self.users.get_by_email(payload.email.lower())
-        # Constant-ish behaviour: always run a verify to reduce enumeration.
         if user is None:
             verify_password(payload.password, hash_password("dummy-password-123A"))
             raise UnauthorizedError("Invalid email or password.")
@@ -60,7 +55,6 @@ class AuthService:
         if not user.is_active:
             raise ForbiddenError("This account has been deactivated.")
 
-        # Opportunistically upgrade legacy/outdated hashes to current Argon2 params.
         if needs_rehash(user.hashed_password):
             user.hashed_password = hash_password(payload.password)
 

@@ -1,11 +1,9 @@
-"""Career Coach Agent: salary insights, next steps and growth plan."""
 from __future__ import annotations
 
 from typing import Any
 
 from app.agents.llm import LLMUnavailable, generate_json
 from app.agents.skills_data import SALARY_BANDS
-
 
 def _level(years: float | None) -> str:
     if not years:
@@ -15,7 +13,6 @@ def _level(years: float | None) -> str:
     if years >= 2:
         return "mid"
     return "junior"
-
 
 def _heuristic_career(parsed: dict[str, Any], skill_gap: dict[str, Any], target_role: str | None) -> dict[str, Any]:
     years = parsed.get("total_experience_years")
@@ -60,7 +57,6 @@ def _heuristic_career(parsed: dict[str, Any], skill_gap: dict[str, Any], target_
             f"{len(missing)} skill gaps and demonstrating ownership to unlock {next_level} roles."
         ),
     }
-
 
 async def analyze_career(parsed: dict[str, Any], skill_gap: dict[str, Any], target_role: str | None) -> dict[str, Any]:
     try:

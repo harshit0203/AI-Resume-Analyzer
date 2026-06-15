@@ -1,4 +1,3 @@
-"""Analysis lifecycle endpoints: create, run, list, retrieve, stats."""
 from __future__ import annotations
 
 import uuid
@@ -17,17 +16,14 @@ from app.services.analysis_service import AnalysisService
 logger = get_logger(__name__)
 router = APIRouter(prefix="/analyses", tags=["analyses"])
 
-
 async def _run_analysis_task(analysis_id: uuid.UUID) -> None:
-    """Background task: execute the workflow with its own DB session."""
     async with AsyncSessionLocal() as session:
         try:
             await AnalysisService(session).run(analysis_id)
             await session.commit()
-        except Exception:  # pragma: no cover - defensive
+        except Exception:
             await session.rollback()
             logger.exception("Background analysis %s crashed", analysis_id)
-
 
 @router.post("", response_model=APIResponse[AnalysisDetail], status_code=status.HTTP_202_ACCEPTED)
 async def create_analysis(
@@ -46,7 +42,6 @@ async def create_analysis(
         message="Analysis started. Connect to the WebSocket for live updates.",
     )
 
-
 @router.get("", response_model=Page[AnalysisListItem])
 async def list_analyses(
     page: int = Query(1, ge=1),
@@ -63,14 +58,12 @@ async def list_analyses(
         [AnalysisListItem.model_validate(item) for item in items], total, page, page_size
     )
 
-
 @router.get("/stats", response_model=APIResponse[dict])
 async def analysis_stats(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> APIResponse[dict]:
     return APIResponse(data=await AnalysisService(db).stats(user.id))
-
 
 @router.get("/{analysis_id}", response_model=APIResponse[AnalysisDetail])
 async def get_analysis(
@@ -80,7 +73,6 @@ async def get_analysis(
 ) -> APIResponse[AnalysisDetail]:
     analysis = await AnalysisService(db).get_detail(analysis_id, user.id)
     return APIResponse(data=AnalysisDetail.model_validate(analysis))
-
 
 @router.delete("/{analysis_id}", response_model=MessageResponse)
 async def delete_analysis(

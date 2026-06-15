@@ -1,4 +1,3 @@
-"""Authentication endpoints: register, login, refresh, logout, me."""
 from __future__ import annotations
 
 from fastapi import APIRouter, Cookie, Depends, Request, Response, status
@@ -26,7 +25,6 @@ from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-
 @router.post("/register", response_model=APIResponse[TokenResponse], status_code=status.HTTP_201_CREATED)
 async def register(
     payload: RegisterRequest,
@@ -45,7 +43,6 @@ async def register(
         ),
         message="Account created successfully.",
     )
-
 
 @router.post("/login", response_model=APIResponse[TokenResponse])
 async def login(
@@ -66,7 +63,6 @@ async def login(
         message="Signed in successfully.",
     )
 
-
 @router.post("/refresh", response_model=APIResponse[RefreshResponse])
 async def refresh_token(
     response: Response,
@@ -83,12 +79,10 @@ async def refresh_token(
         message="Token refreshed.",
     )
 
-
 @router.post("/logout", response_model=MessageResponse)
 async def logout(response: Response) -> MessageResponse:
     clear_auth_cookies(response)
     return MessageResponse(message="Signed out successfully.")
-
 
 @router.get("/me", response_model=APIResponse[UserPublic])
 async def me(user: User = Depends(get_current_user)) -> APIResponse[UserPublic]:

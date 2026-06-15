@@ -1,9 +1,3 @@
-"""Resume Parser Agent.
-
-Extracts structured fields (contact, skills, education, experience,
-certifications, projects) from raw resume text. Uses the LLM when available
-and a robust regex/heuristic parser otherwise.
-"""
 from __future__ import annotations
 
 import re
@@ -25,16 +19,13 @@ SECTION_HEADERS = {
     "certifications": ["certifications", "certificates", "licenses"],
 }
 
-# Flatten the known-skill vocabulary for matching.
 _KNOWN_SKILLS = sorted(set(SKILL_ALIASES.values()), key=len, reverse=True)
-
 
 def normalise_skill(raw: str) -> str | None:
     token = raw.strip().lower().strip(".,;:•-")
     if not token:
         return None
     return SKILL_ALIASES.get(token, token if token in _KNOWN_SKILLS else None)
-
 
 def extract_skills(text: str) -> list[str]:
     found: set[str] = set()
@@ -47,7 +38,6 @@ def extract_skills(text: str) -> list[str]:
         if re.search(r"(?<![\w])" + re.escape(alias) + r"(?![\w])", lower):
             found.add(canonical)
     return sorted(found)
-
 
 def _split_sections(text: str) -> dict[str, str]:
     lines = text.splitlines()
@@ -69,7 +59,6 @@ def _split_sections(text: str) -> dict[str, str]:
             sections.setdefault(current, []).append(line)
     return {k: "\n".join(v).strip() for k, v in sections.items()}
 
-
 def _estimate_experience_years(text: str) -> float | None:
     years = re.findall(r"(19|20)\d{2}", text)
     if len(years) >= 2:
@@ -82,16 +71,13 @@ def _estimate_experience_years(text: str) -> float | None:
         return float(match.group(1))
     return None
 
-
 def quick_structure(text: str) -> dict[str, Any]:
-    """Deterministic structured extraction used during upload."""
     sections = _split_sections(text)
     header = sections.get("header", "")
     emails = EMAIL_RE.findall(text)
     phones = PHONE_RE.findall(text)
     links = [u.rstrip(").,") for u in URL_RE.findall(text)]
 
-    # Name heuristic: first non-empty header line without an email/phone.
     name = None
     for line in header.splitlines():
         clean = line.strip()
@@ -130,7 +116,6 @@ def quick_structure(text: str) -> dict[str, Any]:
         "total_experience_years": _estimate_experience_years(text),
     }
 
-
 def _parse_education(block: str) -> list[dict[str, Any]]:
     items = []
     for line in block.splitlines():
@@ -139,7 +124,6 @@ def _parse_education(block: str) -> list[dict[str, Any]]:
             items.append({"institution": line[:160], "degree": None, "field_of_study": None,
                           "start_date": None, "end_date": None, "grade": None})
     return items[:8]
-
 
 def _parse_experience(block: str) -> list[dict[str, Any]]:
     items = []
@@ -159,9 +143,7 @@ def _parse_experience(block: str) -> list[dict[str, Any]]:
         })
     return items[:10]
 
-
 async def parse_resume(raw_text: str) -> dict[str, Any]:
-    """LLM-enhanced parse with deterministic fallback."""
     baseline = quick_structure(raw_text)
     try:
         system = (
@@ -173,7 +155,6 @@ async def parse_resume(raw_text: str) -> dict[str, Any]:
             "total_experience_years."
         )
         result = await generate_json(system, f"Resume text:\n{raw_text[:8000]}")
-        # Merge: prefer LLM but guarantee skills coverage from deterministic pass.
         merged_skills = sorted(set(result.get("skills", [])) | set(baseline["skills"]))
         result["skills"] = merged_skills
         return result

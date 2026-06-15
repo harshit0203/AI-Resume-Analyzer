@@ -1,8 +1,3 @@
-"""SQLAlchemy models package.
-
-Importing every model here guarantees they are registered on the shared
-``Base.metadata`` before Alembic autogeneration or ``create_all`` runs.
-"""
 from app.models.agent_execution import AgentExecution
 from app.models.analysis import Analysis
 from app.models.career_insight import CareerInsight

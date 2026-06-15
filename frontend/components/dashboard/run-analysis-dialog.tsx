@@ -48,7 +48,7 @@ export function RunAnalysisDialog({
             <ScanText className="size-5 text-primary" /> Run AI analysis
           </DialogTitle>
           <DialogDescription>
-            Choose a target career path to tailor the skill-gap, job-match and coaching agents.
+            Choose a target career path to tailor the skill gap, job match and coaching agents.
           </DialogDescription>
         </DialogHeader>
 

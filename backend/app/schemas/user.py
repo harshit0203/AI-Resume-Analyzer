@@ -1,4 +1,3 @@
-"""User and settings schemas."""
 from __future__ import annotations
 
 import uuid
@@ -8,7 +7,6 @@ from pydantic import BaseModel, EmailStr, Field
 
 from app.models.enums import SubscriptionPlan, UserRole
 from app.schemas.common import ORMModel
-
 
 class UserPublic(ORMModel):
     id: uuid.UUID
@@ -23,12 +21,10 @@ class UserPublic(ORMModel):
     last_login_at: datetime | None = None
     created_at: datetime
 
-
 class UserUpdate(BaseModel):
     full_name: str | None = Field(default=None, max_length=255)
     headline: str | None = Field(default=None, max_length=255)
     avatar_url: str | None = Field(default=None, max_length=512)
-
 
 class UserSettingsSchema(ORMModel):
     theme: str
@@ -38,7 +34,6 @@ class UserSettingsSchema(ORMModel):
     analysis_complete_alerts: bool
     locale: str
     timezone: str
-
 
 class UserSettingsUpdate(BaseModel):
     theme: str | None = Field(default=None, max_length=32)

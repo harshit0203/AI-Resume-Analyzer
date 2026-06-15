@@ -18,7 +18,7 @@ export interface ApiError {
 /**
  * Centralised Axios instance.
  *
- * Auth is cookie-based: the backend sets httpOnly access + refresh cookies, so
+ * Auth uses HTTP-only cookies. The backend sets access and refresh cookies, so
  * `withCredentials: true` is sufficient for the browser to authenticate every
  * request. A response interceptor transparently refreshes the access token on a
  * 401 and retries the original request exactly once.

@@ -1,4 +1,3 @@
-"""UserSettings model: per-user preferences and configuration."""
 from __future__ import annotations
 
 import uuid
@@ -12,7 +11,6 @@ from app.core.database import Base
 
 if TYPE_CHECKING:
     from app.models.user import User
-
 
 class UserSettings(Base):
     __tablename__ = "user_settings"

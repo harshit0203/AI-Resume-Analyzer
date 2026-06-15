@@ -1,4 +1,3 @@
-"""Resume model: stored uploads and their parsed structured data."""
 from __future__ import annotations
 
 import uuid
@@ -14,7 +13,6 @@ from app.models.enums import ResumeStatus
 if TYPE_CHECKING:
     from app.models.analysis import Analysis
     from app.models.user import User
-
 
 class Resume(Base):
     __tablename__ = "resumes"

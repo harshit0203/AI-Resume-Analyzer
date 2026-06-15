@@ -1,4 +1,3 @@
-"""CareerInsight model: career coaching output for an analysis."""
 from __future__ import annotations
 
 import uuid
@@ -13,7 +12,6 @@ from app.core.database import Base
 if TYPE_CHECKING:
     from app.models.analysis import Analysis
 
-
 class CareerInsight(Base):
     __tablename__ = "career_insights"
 
@@ -25,7 +23,6 @@ class CareerInsight(Base):
         unique=True,
     )
 
-    # LLM-generated descriptive fields — use TEXT to avoid truncation errors.
     current_level: Mapped[str | None] = mapped_column(Text, nullable=True)
     target_role: Mapped[str | None] = mapped_column(Text, nullable=True)
     salary_insights: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)

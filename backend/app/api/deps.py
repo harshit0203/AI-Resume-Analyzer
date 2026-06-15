@@ -1,4 +1,3 @@
-"""Reusable FastAPI dependencies: DB session, auth and current user."""
 from __future__ import annotations
 
 import uuid
@@ -17,21 +16,14 @@ from app.repositories.user_repository import UserRepository
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
-
 async def get_session(db: AsyncSession = Depends(get_db)) -> AsyncSession:
     return db
-
 
 async def get_current_user(
     request: Request,
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
     db: AsyncSession = Depends(get_db),
 ) -> User:
-    """Resolve the authenticated user from a Bearer access token.
-
-    Falls back to the access-token cookie when no Authorization header is
-    present, supporting both API clients and the browser app.
-    """
     token: str | None = None
     if credentials is not None and credentials.scheme.lower() == "bearer":
         token = credentials.credentials
@@ -49,7 +41,6 @@ async def get_current_user(
     if user is None or not user.is_active:
         raise UnauthorizedError("User account is unavailable.")
     return user
-
 
 async def get_current_admin(user: User = Depends(get_current_user)) -> User:
     if user.role != UserRole.ADMIN:

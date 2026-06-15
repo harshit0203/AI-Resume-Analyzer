@@ -37,7 +37,7 @@ const features = [
     icon: Workflow,
     title: "Live Agent Timeline",
     description:
-      "Watch each AI agent process your resume step-by-step over a real-time WebSocket stream.",
+      "Watch each AI agent process your resume live over a WebSocket stream as results appear in real time.",
     className: "md:col-span-2",
   },
   {

@@ -21,7 +21,7 @@ const testimonials = [
   },
   {
     quote:
-      "The skill-gap roadmap told me exactly what to learn for a DevOps role. No fluff, just a clear 12-week plan.",
+      "The skill gap roadmap told me exactly what to learn for a DevOps role. No fluff, just a clear 12 week plan.",
     name: "Daniel K.",
     role: "DevOps Engineer",
   },

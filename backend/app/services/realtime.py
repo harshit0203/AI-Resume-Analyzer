@@ -1,8 +1,3 @@
-"""In-process WebSocket connection manager for live analysis updates.
-
-Connections are keyed by ``analysis_id`` so multiple browser tabs watching the
-same analysis all receive the agent lifecycle events.
-"""
 from __future__ import annotations
 
 import asyncio
@@ -14,7 +9,6 @@ from fastapi import WebSocket
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)
-
 
 class ConnectionManager:
     def __init__(self) -> None:
@@ -39,10 +33,9 @@ class ConnectionManager:
         for ws in targets:
             try:
                 await ws.send_json(message)
-            except Exception:  # pragma: no cover - client disconnected
+            except Exception:
                 dead.append(ws)
         for ws in dead:
             await self.disconnect(analysis_id, ws)
-
 
 connection_manager = ConnectionManager()

@@ -1,11 +1,9 @@
-"""Job Match Agent: ranks suitable job roles for the candidate."""
 from __future__ import annotations
 
 from typing import Any
 
 from app.agents.llm import LLMUnavailable, generate_json
 from app.agents.skills_data import CAREER_PATHS, SALARY_BANDS
-
 
 def _seniority(parsed: dict[str, Any]) -> str:
     years = parsed.get("total_experience_years") or 0
@@ -14,7 +12,6 @@ def _seniority(parsed: dict[str, Any]) -> str:
     if years >= 2:
         return "mid"
     return "junior"
-
 
 def _heuristic_job_match(parsed: dict[str, Any]) -> list[dict[str, Any]]:
     have = {s.lower() for s in parsed.get("skills", [])}
@@ -48,7 +45,6 @@ def _heuristic_job_match(parsed: dict[str, Any]) -> list[dict[str, Any]]:
 
     matches.sort(key=lambda m: m["match_percentage"], reverse=True)
     return matches[:6]
-
 
 async def analyze_job_match(parsed: dict[str, Any]) -> list[dict[str, Any]]:
     try:

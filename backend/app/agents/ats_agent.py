@@ -1,11 +1,9 @@
-"""ATS Analyzer Agent: scores resume against ATS best practices."""
 from __future__ import annotations
 
 from typing import Any
 
 from app.agents.llm import LLMUnavailable, generate_json
 from app.agents.skills_data import ATS_KEYWORD_HINTS
-
 
 def _heuristic_ats(parsed: dict[str, Any], raw_text: str) -> dict[str, Any]:
     text = (raw_text or "").lower()
@@ -78,7 +76,6 @@ def _heuristic_ats(parsed: dict[str, Any], raw_text: str) -> dict[str, Any]:
         "recommendations": recommendations or ["Tailor the resume to each target role."],
         "formatting_issues": formatting_issues,
     }
-
 
 async def analyze_ats(parsed: dict[str, Any], raw_text: str, target_role: str | None) -> dict[str, Any]:
     try:

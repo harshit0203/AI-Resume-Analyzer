@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * AIResumeAnalyzer design system — dark-mode-first.
+ * AIResumeAnalyzer design system. Dark mode by default, light mode available.
  * Colors are expressed in oklch for perceptually uniform gradients.
  */
 :root {

@@ -1,4 +1,3 @@
-"""Local filesystem storage with a stable interface for future S3 support."""
 from __future__ import annotations
 
 import hashlib
@@ -13,9 +12,7 @@ from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 
-
 class StorageService:
-    """Persists uploaded files and returns a relative storage path."""
 
     def __init__(self) -> None:
         self.base_dir = Path(settings.UPLOAD_DIR)
@@ -36,7 +33,6 @@ class StorageService:
             )
 
     async def save(self, user_id: uuid.UUID, file_name: str, data: bytes) -> tuple[str, str]:
-        """Persist file bytes and return (relative_path, sha256_checksum)."""
         suffix = Path(file_name).suffix.lower()
         user_dir = self.base_dir / str(user_id)
         user_dir.mkdir(parents=True, exist_ok=True)
@@ -65,8 +61,7 @@ class StorageService:
         path = self.absolute_path(relative_path)
         try:
             path.unlink(missing_ok=True)
-        except OSError as exc:  # pragma: no cover
+        except OSError as exc:
             logger.warning("Failed to delete %s: %s", relative_path, exc)
-
 
 storage_service = StorageService()

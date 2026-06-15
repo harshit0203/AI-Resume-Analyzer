@@ -1,4 +1,3 @@
-"""Resume upload, parsing orchestration and versioning."""
 from __future__ import annotations
 
 import uuid
@@ -14,7 +13,6 @@ from app.services.storage_service import storage_service
 from app.utils.text_extraction import extract_text
 
 logger = get_logger(__name__)
-
 
 class ResumeService:
     def __init__(self, session: AsyncSession) -> None:
@@ -49,18 +47,14 @@ class ResumeService:
             status=ResumeStatus.UPLOADED,
         )
 
-        # Synchronously extract text and structure so history is useful
-        # immediately; heavy AI analysis happens on demand.
         await self._parse(resume, data, content_type, file_name)
-        # Reload all columns (incl. DB-generated updated_at) inside the async
-        # context so serialization never triggers a lazy load.
         await self.session.refresh(resume)
         return resume
 
     async def _parse(
         self, resume: Resume, data: bytes, content_type: str, file_name: str
     ) -> None:
-        from app.agents.parser_agent import quick_structure  # local import avoids cycle
+        from app.agents.parser_agent import quick_structure
 
         try:
             resume.status = ResumeStatus.PARSING
@@ -71,7 +65,7 @@ class ResumeService:
             resume.parsed_data = structured
             resume.status = ResumeStatus.PARSED
             resume.parse_error = None
-        except Exception as exc:  # pragma: no cover - defensive
+        except Exception as exc:
             logger.exception("Resume parsing failed for %s", resume.id)
             resume.status = ResumeStatus.FAILED
             resume.parse_error = str(exc)

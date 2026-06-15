@@ -1,10 +1,8 @@
-"""Resume Improvement Agent: rewrites and strengthens resume content."""
 from __future__ import annotations
 
 from typing import Any
 
 from app.agents.llm import LLMUnavailable, generate_json
-
 
 def _heuristic_improvement(parsed: dict[str, Any], ats: dict[str, Any]) -> dict[str, Any]:
     skills = parsed.get("skills", [])
@@ -44,7 +42,6 @@ def _heuristic_improvement(parsed: dict[str, Any], ats: dict[str, Any]) -> dict[
         ],
         "ats_keywords": ats.get("missing_keywords", [])[:10],
     }
-
 
 async def analyze_improvement(parsed: dict[str, Any], ats: dict[str, Any]) -> dict[str, Any]:
     try:

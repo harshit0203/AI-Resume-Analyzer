@@ -1,4 +1,3 @@
-"""Data access for resumes."""
 from __future__ import annotations
 
 import uuid
@@ -8,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.resume import Resume
 from app.repositories.base import BaseRepository
-
 
 class ResumeRepository(BaseRepository[Resume]):
     def __init__(self, session: AsyncSession) -> None:

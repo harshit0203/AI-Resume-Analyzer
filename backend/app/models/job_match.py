@@ -1,4 +1,3 @@
-"""JobMatch model: matched job roles produced by the Job Match agent."""
 from __future__ import annotations
 
 import uuid
@@ -12,7 +11,6 @@ from app.core.database import Base
 
 if TYPE_CHECKING:
     from app.models.analysis import Analysis
-
 
 class JobMatch(Base):
     __tablename__ = "job_matches"

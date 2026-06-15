@@ -8,15 +8,15 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: {
-    default: "AIResumeAnalyzer — AI-powered resume intelligence",
+    default: "AIResumeAnalyzer | Intelligent Resume Analysis",
     template: "%s · AIResumeAnalyzer",
   },
   description:
-    "Multi-agent AI that scores your resume against ATS, finds skill gaps, matches jobs and coaches your career — in seconds.",
+    "Six AI agents score your resume against ATS, find skill gaps, match jobs and coach your career in seconds.",
   keywords: ["resume", "ATS", "AI", "career", "job matching", "resume analyzer"],
   openGraph: {
     title: "AIResumeAnalyzer",
-    description: "AI-powered, multi-agent resume analysis and career coaching.",
+    description: "Six AI agents. One resume. Instant career insights.",
     type: "website",
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),

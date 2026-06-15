@@ -1,4 +1,3 @@
-"""User profile and settings management."""
 from __future__ import annotations
 
 import uuid
@@ -12,7 +11,6 @@ from app.models.user_settings import UserSettings
 from app.repositories.user_repository import UserRepository, UserSettingsRepository
 from app.schemas.auth import ChangePasswordRequest
 from app.schemas.user import UserSettingsUpdate, UserUpdate
-
 
 class UserService:
     def __init__(self, session: AsyncSession) -> None:

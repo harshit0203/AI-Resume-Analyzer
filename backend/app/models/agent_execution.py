@@ -1,4 +1,3 @@
-"""AgentExecution model: per-agent execution record within an analysis."""
 from __future__ import annotations
 
 import uuid
@@ -14,7 +13,6 @@ from app.models.enums import AgentStatus, AgentType
 
 if TYPE_CHECKING:
     from app.models.analysis import Analysis
-
 
 class AgentExecution(Base):
     __tablename__ = "agent_executions"

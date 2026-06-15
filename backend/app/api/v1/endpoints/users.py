@@ -1,4 +1,3 @@
-"""User profile and settings endpoints."""
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends
@@ -18,11 +17,9 @@ from app.services.user_service import UserService
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-
 @router.get("/me", response_model=APIResponse[UserPublic])
 async def get_profile(user: User = Depends(get_current_user)) -> APIResponse[UserPublic]:
     return APIResponse(data=UserPublic.model_validate(user))
-
 
 @router.patch("/me", response_model=APIResponse[UserPublic])
 async def update_profile(
@@ -33,7 +30,6 @@ async def update_profile(
     updated = await UserService(db).update_profile(user, payload)
     return APIResponse(data=UserPublic.model_validate(updated), message="Profile updated.")
 
-
 @router.post("/me/change-password", response_model=MessageResponse)
 async def change_password(
     payload: ChangePasswordRequest,
@@ -43,7 +39,6 @@ async def change_password(
     await UserService(db).change_password(user, payload)
     return MessageResponse(message="Password changed successfully.")
 
-
 @router.get("/me/settings", response_model=APIResponse[UserSettingsSchema])
 async def get_settings(
     user: User = Depends(get_current_user),
@@ -51,7 +46,6 @@ async def get_settings(
 ) -> APIResponse[UserSettingsSchema]:
     settings_row = await UserService(db).get_settings(user.id)
     return APIResponse(data=UserSettingsSchema.model_validate(settings_row))
-
 
 @router.patch("/me/settings", response_model=APIResponse[UserSettingsSchema])
 async def update_settings(

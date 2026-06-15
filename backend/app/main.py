@@ -1,4 +1,3 @@
-"""FastAPI application entrypoint."""
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
@@ -28,7 +27,6 @@ limiter = Limiter(
     enabled=settings.RATE_LIMIT_ENABLED,
 )
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting %s (%s)", settings.PROJECT_NAME, settings.ENVIRONMENT)
@@ -36,7 +34,6 @@ async def lifespan(app: FastAPI):
     yield
     await close_redis()
     logger.info("Shutdown complete.")
-
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -69,7 +66,6 @@ def create_app() -> FastAPI:
     register_exception_handlers(app)
 
     app.include_router(api_router, prefix=settings.API_V1_PREFIX)
-    # WebSocket mounted at root so the path is /ws/analyses/{id}.
     app.include_router(websocket_endpoints.router)
 
     @app.get("/health", tags=["system"])
@@ -81,6 +77,5 @@ def create_app() -> FastAPI:
         return {"name": settings.PROJECT_NAME, "docs": "/docs", "version": "1.0.0"}
 
     return app
-
 
 app = create_app()

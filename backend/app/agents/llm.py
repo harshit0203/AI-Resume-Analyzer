@@ -1,9 +1,3 @@
-"""LLM provider wrapper.
-
-Provides a single helper for structured JSON generation via OpenAI (through
-LangChain). When no API key is configured the helper raises ``LLMUnavailable``
-so callers can fall back to the deterministic engine.
-"""
 from __future__ import annotations
 
 import json
@@ -14,14 +8,11 @@ from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 
-
 class LLMUnavailable(RuntimeError):
-    """Raised when the LLM cannot be used (no key / library error)."""
-
+    pass
 
 def is_available() -> bool:
     return bool(settings.AI_ENABLED and settings.OPENAI_API_KEY)
-
 
 def _client():
     from langchain_openai import ChatOpenAI
@@ -34,9 +25,7 @@ def _client():
         max_retries=2,
     )
 
-
 async def generate_json(system_prompt: str, user_prompt: str) -> dict[str, Any]:
-    """Call the LLM and parse a JSON object from the response."""
     if not is_available():
         raise LLMUnavailable("OpenAI API key is not configured.")
 
@@ -48,13 +37,12 @@ async def generate_json(system_prompt: str, user_prompt: str) -> dict[str, Any]:
     ]
     try:
         response = await _client().ainvoke(messages)
-    except Exception as exc:  # pragma: no cover - network dependent
+    except Exception as exc:
         logger.warning("LLM call failed: %s", exc)
         raise LLMUnavailable(str(exc)) from exc
 
     content = response.content if isinstance(response.content, str) else str(response.content)
     return _extract_json(content)
-
 
 def _extract_json(content: str) -> dict[str, Any]:
     content = content.strip()

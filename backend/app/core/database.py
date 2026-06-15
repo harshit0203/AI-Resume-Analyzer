@@ -1,4 +1,3 @@
-"""Async SQLAlchemy engine, session factory and declarative base."""
 from __future__ import annotations
 
 import uuid
@@ -32,9 +31,7 @@ AsyncSessionLocal = async_sessionmaker(
     autoflush=False,
 )
 
-
 class Base(DeclarativeBase):
-    """Declarative base with common timestamp and id columns."""
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
@@ -53,9 +50,7 @@ class Base(DeclarativeBase):
         nullable=False,
     )
 
-
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    """FastAPI dependency that yields a transactional database session."""
     async with AsyncSessionLocal() as session:
         try:
             yield session

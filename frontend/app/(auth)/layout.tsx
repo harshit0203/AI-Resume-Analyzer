@@ -22,7 +22,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             </p>
           </div>
           <p className="text-sm text-muted-foreground">
-            Trusted by job seekers targeting top-tier product & AI companies.
+            Trusted by job seekers targeting the best product and AI companies.
           </p>
         </div>
       </div>

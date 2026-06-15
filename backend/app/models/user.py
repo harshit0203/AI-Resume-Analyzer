@@ -1,4 +1,3 @@
-"""User and authentication related models."""
 from __future__ import annotations
 
 from datetime import datetime
@@ -14,7 +13,6 @@ if TYPE_CHECKING:
     from app.models.analysis import Analysis
     from app.models.resume import Resume
     from app.models.user_settings import UserSettings
-
 
 class User(Base):
     __tablename__ = "users"

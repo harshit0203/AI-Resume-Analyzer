@@ -11,7 +11,7 @@ import {
 const faqs = [
   {
     q: "How does the AI analysis work?",
-    a: "When you upload a resume, six specialized agents run in sequence on a LangGraph workflow: parsing, ATS scoring, skill-gap analysis, job matching, content improvement, and career coaching. You can watch them work in real time.",
+    a: "When you upload a resume, six specialized agents run in sequence on a LangGraph workflow: parsing, ATS scoring, skill gap analysis, job matching, content improvement and career coaching. You can watch them work in real time.",
   },
   {
     q: "Which file formats are supported?",
@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     q: "Is my data secure?",
-    a: "Yes. Authentication uses JWT access and refresh tokens stored in httpOnly, secure cookies. Your files are stored privately and scoped to your account, and every request is validated and rate-limited.",
+    a: "Yes. Authentication uses JWT access and refresh tokens stored in secure, HTTP-only cookies. Your files are stored privately and scoped to your account, and every request is validated and rate limited.",
   },
   {
     q: "Do I need an OpenAI API key?",

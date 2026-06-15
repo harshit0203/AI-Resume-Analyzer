@@ -1,4 +1,3 @@
-"""Analysis model: a full multi-agent run against a resume."""
 from __future__ import annotations
 
 import uuid
@@ -19,7 +18,6 @@ if TYPE_CHECKING:
     from app.models.resume import Resume
     from app.models.user import User
 
-
 class Analysis(Base):
     __tablename__ = "analyses"
 
@@ -38,7 +36,6 @@ class Analysis(Base):
     ats_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     overall_score: Mapped[float | None] = mapped_column(Float, nullable=True)
 
-    # Aggregated agent outputs stored as JSONB for fast retrieval.
     ats_result: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
     skill_gap_result: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
     improvement_result: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)

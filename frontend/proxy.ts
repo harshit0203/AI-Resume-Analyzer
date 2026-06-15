@@ -6,7 +6,7 @@ const AUTH_ROUTES = ["/login", "/register"];
 /**
  * Edge proxy (formerly "middleware") gate.
  *
- * The backend issues httpOnly cookies (`ara_access_token` + `ara_refresh_token`).
+ * The backend issues secure HTTP-only cookies (ara_access_token and ara_refresh_token).
  * The edge cannot cheaply verify JWT signatures, so it checks for the presence
  * of a session cookie to gate protected routes and bounce authenticated users
  * away from auth pages. Full verification still happens on every API call.

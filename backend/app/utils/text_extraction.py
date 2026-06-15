@@ -1,4 +1,3 @@
-"""Extract raw text from PDF and DOCX resume files."""
 from __future__ import annotations
 
 import io
@@ -9,28 +8,24 @@ from pypdf import PdfReader
 
 from app.core.exceptions import ValidationError
 
-
 def _normalise(text: str) -> str:
     text = text.replace("\x00", " ")
-    # Collapse excessive blank lines while preserving paragraph breaks.
     text = re.sub(r"[ \t]+", " ", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
-
 
 def extract_pdf_text(data: bytes) -> str:
     try:
         reader = PdfReader(io.BytesIO(data))
         pages = [page.extract_text() or "" for page in reader.pages]
-    except Exception as exc:  # pragma: no cover - corrupt files
+    except Exception as exc:
         raise ValidationError("Unable to read the PDF file.") from exc
     return _normalise("\n".join(pages))
-
 
 def extract_docx_text(data: bytes) -> str:
     try:
         document = Document(io.BytesIO(data))
-    except Exception as exc:  # pragma: no cover - corrupt files
+    except Exception as exc:
         raise ValidationError("Unable to read the DOCX file.") from exc
 
     parts: list[str] = [para.text for para in document.paragraphs]
@@ -38,7 +33,6 @@ def extract_docx_text(data: bytes) -> str:
         for row in table.rows:
             parts.append(" | ".join(cell.text for cell in row.cells))
     return _normalise("\n".join(parts))
-
 
 def extract_text(data: bytes, content_type: str, file_name: str) -> str:
     name = file_name.lower()

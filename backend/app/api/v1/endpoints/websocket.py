@@ -1,4 +1,3 @@
-"""WebSocket endpoint streaming live multi-agent analysis updates."""
 from __future__ import annotations
 
 import uuid
@@ -15,18 +14,12 @@ from app.services.realtime import connection_manager
 logger = get_logger(__name__)
 router = APIRouter(tags=["realtime"])
 
-
 @router.websocket("/ws/analyses/{analysis_id}")
 async def analysis_updates(
     websocket: WebSocket,
     analysis_id: uuid.UUID,
     token: str | None = Query(default=None),
 ) -> None:
-    """Authenticated WebSocket scoped to a single analysis the user owns.
-
-    The access token is supplied via the ``token`` query parameter because
-    browsers cannot set custom headers on WebSocket connections.
-    """
     access_token = token or websocket.cookies.get("ara_access_token")
     if not access_token:
         await websocket.close(code=4401)
@@ -53,9 +46,8 @@ async def analysis_updates(
     })
     try:
         while True:
-            # Keep the connection alive; ignore inbound client messages.
             await websocket.receive_text()
     except WebSocketDisconnect:
         await connection_manager.disconnect(str(analysis_id), websocket)
-    except Exception:  # pragma: no cover
+    except Exception:
         await connection_manager.disconnect(str(analysis_id), websocket)

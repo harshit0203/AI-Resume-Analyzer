@@ -1,4 +1,3 @@
-"""Generic async repository implementing common CRUD operations."""
 from __future__ import annotations
 
 import uuid
@@ -11,9 +10,7 @@ from app.core.database import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 
-
 class BaseRepository(Generic[ModelType]):
-    """Reusable data-access methods scoped to a single model."""
 
     def __init__(self, model: Type[ModelType], session: AsyncSession) -> None:
         self.model = model

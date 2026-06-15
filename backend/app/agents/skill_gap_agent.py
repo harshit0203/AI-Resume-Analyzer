@@ -1,4 +1,3 @@
-"""Skill Gap Agent: compares resume skills against target career paths."""
 from __future__ import annotations
 
 from typing import Any
@@ -10,7 +9,6 @@ from app.agents.skills_data import (
     LEARNING_RESOURCES,
 )
 
-
 def _resolve_path(target_role: str | None) -> str:
     if target_role and target_role in CAREER_PATHS:
         return target_role
@@ -20,7 +18,6 @@ def _resolve_path(target_role: str | None) -> str:
             if path.lower() in lowered or lowered in path.lower():
                 return path
     return "Full Stack Engineer"
-
 
 def _heuristic_skill_gap(parsed: dict[str, Any], target_role: str | None) -> dict[str, Any]:
     path = _resolve_path(target_role)
@@ -56,7 +53,6 @@ def _heuristic_skill_gap(parsed: dict[str, Any], target_role: str | None) -> dic
         "coverage_percentage": coverage,
         "learning_roadmap": roadmap,
     }
-
 
 async def analyze_skill_gap(parsed: dict[str, Any], target_role: str | None) -> dict[str, Any]:
     try:

@@ -1,4 +1,3 @@
-"""Resume and parsed-data schemas."""
 from __future__ import annotations
 
 import uuid
@@ -10,14 +9,12 @@ from pydantic import BaseModel, Field
 from app.models.enums import ResumeStatus
 from app.schemas.common import ORMModel
 
-
 class ContactInfo(BaseModel):
     name: str | None = None
     email: str | None = None
     phone: str | None = None
     location: str | None = None
     links: list[str] = Field(default_factory=list)
-
 
 class EducationItem(BaseModel):
     institution: str | None = None
@@ -27,7 +24,6 @@ class EducationItem(BaseModel):
     end_date: str | None = None
     grade: str | None = None
 
-
 class ExperienceItem(BaseModel):
     company: str | None = None
     title: str | None = None
@@ -36,13 +32,11 @@ class ExperienceItem(BaseModel):
     location: str | None = None
     highlights: list[str] = Field(default_factory=list)
 
-
 class ProjectItem(BaseModel):
     name: str | None = None
     description: str | None = None
     technologies: list[str] = Field(default_factory=list)
     link: str | None = None
-
 
 class ParsedResume(BaseModel):
     contact: ContactInfo = Field(default_factory=ContactInfo)
@@ -54,7 +48,6 @@ class ParsedResume(BaseModel):
     projects: list[ProjectItem] = Field(default_factory=list)
     languages: list[str] = Field(default_factory=list)
     total_experience_years: float | None = None
-
 
 class ResumePublic(ORMModel):
     id: uuid.UUID
@@ -68,7 +61,6 @@ class ResumePublic(ORMModel):
     parse_error: str | None = None
     created_at: datetime
     updated_at: datetime
-
 
 class ResumeListItem(ORMModel):
     id: uuid.UUID

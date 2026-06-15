@@ -1,4 +1,3 @@
-"""Analysis orchestration: runs the multi-agent workflow and persists results."""
 from __future__ import annotations
 
 import time
@@ -27,13 +26,10 @@ from app.services.realtime import connection_manager
 
 logger = get_logger(__name__)
 
-
 def _clip(value: Any, max_len: int) -> str | None:
-    """Trim a value to fit a bounded VARCHAR column (None-safe)."""
     if value is None:
         return None
     return str(value)[:max_len]
-
 
 class AnalysisService:
     def __init__(self, session: AsyncSession) -> None:
@@ -54,7 +50,6 @@ class AnalysisService:
             target_role=target_role,
             status=AnalysisStatus.PENDING,
         )
-        # Pre-create agent execution rows so the UI can render a full timeline.
         for index, agent_type in enumerate(AGENT_SEQUENCE):
             self.session.add(
                 AgentExecution(
@@ -68,7 +63,6 @@ class AnalysisService:
         return analysis
 
     async def run(self, analysis_id: uuid.UUID) -> Analysis:
-        """Execute the workflow for a previously created analysis."""
         analysis = await self.analyses.get_detail_unscoped(analysis_id)
         if analysis is None:
             raise NotFoundError("Analysis not found.")
@@ -126,11 +120,8 @@ class AnalysisService:
             analysis.completed_at = datetime.now(timezone.utc)
             analysis.duration_ms = round((time.perf_counter() - started) * 1000, 2)
             await self.session.flush()
-        except Exception as exc:  # pragma: no cover - defensive
+        except Exception as exc:
             logger.exception("Analysis %s failed", analysis_id)
-            # A failed flush poisons the current transaction, so roll back and
-            # re-load the analysis before recording the failure — otherwise the
-            # status stays RUNNING forever and clients poll indefinitely.
             await self.session.rollback()
             analysis = await self.analyses.get_detail_unscoped(analysis_id)
             if analysis is not None:

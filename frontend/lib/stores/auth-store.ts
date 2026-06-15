@@ -10,7 +10,7 @@ interface AuthState {
 }
 
 /**
- * Lightweight client-side auth cache. The httpOnly cookies remain the source of
+ * Lightweight client-side auth cache. The HTTP-only cookies remain the source of
  * truth for authentication; this store only mirrors the current user for UI.
  */
 export const useAuthStore = create<AuthState>((set) => ({
