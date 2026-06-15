@@ -1,0 +1,135 @@
+# =============================================================================
+# AIResumeAnalyzer — root .gitignore
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# SECRETS & ENVIRONMENT — never commit these
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# ---------------------------------------------------------------------------
+# Python / Backend
+# ---------------------------------------------------------------------------
+backend/venv/
+backend/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.pyd
+**/.Python
+
+# Test & coverage artefacts
+.pytest_cache/
+**/.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.xml
+
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+.ruff_cache/
+.pytype/
+
+# Compiled extensions
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+**/*.egg-info/
+
+# Alembic auto-generated migration SQLite
+*.db
+*.sqlite3
+
+# Uploaded resume files & local media (user data — not in VCS)
+backend/storage/
+
+# Log files
+*.log
+logs/
+backend/logs/
+
+# ---------------------------------------------------------------------------
+# Node / Frontend
+# ---------------------------------------------------------------------------
+frontend/node_modules/
+**/node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+**/.next/
+
+# Production builds
+build/
+
+# TypeScript incremental build cache
+*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Vercel / deployment
+.vercel
+
+# ---------------------------------------------------------------------------
+# Testing
+# ---------------------------------------------------------------------------
+coverage/
+/coverage/
+
+# ---------------------------------------------------------------------------
+# Docker (don't track override files with local secrets)
+# ---------------------------------------------------------------------------
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ---------------------------------------------------------------------------
+# OS artefacts
+# ---------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ---------------------------------------------------------------------------
+# Editor / IDE
+# ---------------------------------------------------------------------------
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ---------------------------------------------------------------------------
+# Misc
+# ---------------------------------------------------------------------------
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
